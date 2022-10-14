@@ -13,6 +13,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	client := &http.Client{}
 
 	username := "BarackObama"
@@ -23,11 +24,10 @@ func main() {
 
 	req.Header.Add("Authorization", "Bearer "+os.Getenv("BEARER"))
 	resp, err := client.Do(req)
-
 	if err != nil {
 		log.Fatal(err)
-
 	}
+
 	fmt.Println(resp.StatusCode)
 	fmt.Println(resp.Body)
 }
