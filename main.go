@@ -1,6 +1,7 @@
 package main
 
 import (
+	c "doescher.ninja/twitter-service/config"
 	"fmt"
 	"github.com/joho/godotenv"
 	"log"
@@ -17,7 +18,7 @@ func main() {
 	client := &http.Client{}
 
 	username := "BarackObama"
-	req, err := http.NewRequest("GET", "https://api.twitter.com/2/users/by/username/"+username, nil)
+	req, err := http.NewRequest("GET", c.UserByName+username, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
