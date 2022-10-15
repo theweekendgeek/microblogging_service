@@ -76,18 +76,18 @@ func resustIds(username string, client *http.Client) {
 }
 
 func readUserIds() []int {
-	contents, err := os.Open("users.json")
+	file, err := os.Open("users.json")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	t, err := io.ReadAll(contents)
+	content, err := io.ReadAll(file)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	var userIds []int
-	err = json.Unmarshal(t, &userIds)
+	err = json.Unmarshal(content, &userIds)
 	if err != nil {
 		log.Fatal(err)
 	}
