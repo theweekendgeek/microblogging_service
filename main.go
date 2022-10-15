@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/joho/godotenv"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -47,7 +47,7 @@ func main() {
 	//fmt.Println(resp.Body.Read(a))
 
 	//fmt.Println(a)
-	resBody, err := ioutil.ReadAll(resp.Body)
+	resBody, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
