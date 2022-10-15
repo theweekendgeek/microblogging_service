@@ -1,7 +1,10 @@
 package config
 
-var BaseUrl = "https://api.twitter.com"
-var Version = "/2"
-var GetUserEndpoint = "/users/by/username/"
+var baseUrl = "https://api.twitter.com"
+var version = "/2"
 
-var UserByName = BaseUrl + Version + GetUserEndpoint
+//var getUserEndpoint = "/users/by/username/"
+var getUserById = "/users/"
+
+//var UserByName = baseUrl + version + getUserEndpoint
+var UserById = baseUrl + version + getUserById

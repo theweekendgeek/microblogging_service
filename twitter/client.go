@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 )
 
 type Profile struct {
@@ -21,10 +22,24 @@ type ProfileResponse struct {
 }
 
 func Request() {
+	ids := readUserIds()
+
 	client := &http.Client{}
 
-	username := "BarackObama"
-	req, err := http.NewRequest("GET", c.UserByName+username, nil)
+	//username := "BarackObama"
+	for _, v := range ids {
+		//fmt.Println(string(v))
+		//fmt.Println()
+		resustIds(strconv.FormatInt(int64(v), 10), client)
+	}
+
+	//resustIds(username, client)
+}
+
+func resustIds(username string, client *http.Client) {
+	fmt.Println(c.UserById + username)
+	//os.Exit(0)
+	req, err := http.NewRequest("GET", c.UserById+username, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -58,4 +73,24 @@ func Request() {
 	fmt.Println(profileRes.Data.Id)
 	fmt.Println(profileRes.Data.Username)
 	fmt.Println(profileRes.Data.Name)
+}
+
+func readUserIds() []int {
+	contents, err := os.Open("users.json")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	t, err := io.ReadAll(contents)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var userIds []int
+	err = json.Unmarshal(t, &userIds)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return userIds
 }

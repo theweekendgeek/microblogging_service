@@ -5,3 +5,4 @@
 *.tfstate
 *.tfstate.backup
 .terraform
+/users.json
