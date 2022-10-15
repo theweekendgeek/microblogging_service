@@ -2,12 +2,24 @@ package main
 
 import (
 	c "doescher.ninja/twitter-service/config"
+	"encoding/json"
 	"fmt"
 	"github.com/joho/godotenv"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 )
+
+type Profile struct {
+	Id       string `json:"id"`
+	Name     string `json:"name"`
+	Username string `json:"username"`
+}
+
+type ProfileResponse struct {
+	Data Profile `json:"data"`
+}
 
 func main() {
 	err := godotenv.Load()
@@ -31,4 +43,26 @@ func main() {
 
 	fmt.Println(resp.StatusCode)
 	fmt.Println(resp.Body)
+	//var a []byte
+	//fmt.Println(resp.Body.Read(a))
+
+	//fmt.Println(a)
+	resBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(resBody)
+
+	var profileRes ProfileResponse
+
+	err = json.Unmarshal(resBody, &profileRes)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(profileRes.Data.Id)
+	fmt.Println(profileRes.Data.Username)
+	fmt.Println(profileRes.Data.Name)
+
 }
