@@ -12,6 +12,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	t.Request()
-
+	t.GetData()
 }
