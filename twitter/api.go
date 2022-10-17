@@ -2,40 +2,56 @@ package twitter
 
 import (
 	c "doescher.ninja/twitter-service/config"
+	"doescher.ninja/twitter-service/orm"
 	"encoding/json"
-	"fmt"
+	"gorm.io/gorm"
 	"io"
 	"log"
 	"os"
 	"strconv"
 )
 
-//func GetData(endpoint string, response interface{}) {
-func GetData() {
+func GetProfiles() {
 	ids, err := readUserIds()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	for _, v := range ids {
-		url := c.UserById + strconv.FormatInt(int64(v), 10)
-
-		res, err := MakeRequest(url)
+		profileResponse, err := RequestData(v)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		var profileRes ProfileResponse
-		err = json.Unmarshal(res, &profileRes)
-		if err != nil {
-			log.Fatal(err)
+		a, ok := profileResponse.(ProfileResponse)
+		if !ok {
+			log.Fatal(ok)
 		}
 
-		fmt.Println(profileRes.Data.Id)
-		fmt.Println(profileRes.Data.Username)
-		fmt.Println(profileRes.Data.Name)
+		profileModel := orm.GormProfile{
+			Model:    gorm.Model{},
+			Id:       a.Data.Id,
+			Username: a.Data.Username,
+			Name:     a.Data.Name,
+		}
+
+		_ = orm.GetDb().Create(&profileModel)
+	}
+}
+
+//func RequestData(endpoint string, response interface{}) {
+func RequestData(v int) (interface{}, error) {
+
+	url := c.UserById + strconv.FormatInt(int64(v), 10)
+	res, err := MakeRequest(url)
+	if err != nil {
+		log.Fatal(err)
 	}
 
+	var profileResponse ProfileResponse
+	err = Parser{}.ParseResponse(res, &profileResponse)
+
+	return profileResponse, err
 }
 
 func readUserIds() ([]int, error) {

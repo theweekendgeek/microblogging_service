@@ -25,7 +25,7 @@ func TestParseProfileResponse(t *testing.T) {
 		}
 	`)
 
-	err := parser.ParseProfile(response, &profileResponse)
+	err := parser.ParseResponse(response, &profileResponse)
 	if err != nil {
 		t.Fatal("error")
 	}
@@ -127,7 +127,7 @@ func TestParsesTimelines(t *testing.T) {
 	 }`)
 	var timelineResponse = twitter.TimelineResponse{}
 
-	_ = parser.ParseTimeline(response, &timelineResponse)
+	_ = parser.ParseResponse(response, &timelineResponse)
 
 	if assert.NotNil(t, timelineResponse.Data) && assert.NotNil(t, timelineResponse.MetaData) {
 		fmt.Println(timelineResponse.Data[0].Text)
