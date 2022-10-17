@@ -7,16 +7,6 @@ import (
 	"os"
 )
 
-type Profile struct {
-	Id       string `json:"id"`
-	Name     string `json:"name"`
-	Username string `json:"username"`
-}
-
-type ProfileResponse struct {
-	Data Profile `json:"data"`
-}
-
 var client *http.Client
 
 func init() {
