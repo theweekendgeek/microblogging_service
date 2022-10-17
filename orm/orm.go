@@ -43,7 +43,7 @@ func Connect() error {
 }
 
 func Migrate() error {
-	return conn.AutoMigrate(&GormProfile{})
+	return conn.AutoMigrate(&Profile{})
 }
 
 func GetDb() *gorm.DB {

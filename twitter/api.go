@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-func GetProfiles() {
+func GetData() {
 	ids, err := readUserIds()
 	if err != nil {
 		log.Fatal(err)
@@ -23,19 +23,22 @@ func GetProfiles() {
 			log.Fatal(err)
 		}
 
-		a, ok := profileResponse.(ProfileResponse)
-		if !ok {
-			log.Fatal(ok)
-		}
+		profile := MatchProfile(profileResponse)
+		_ = orm.GetDb().Create(&profile)
+	}
+}
 
-		profileModel := orm.GormProfile{
-			Model:    gorm.Model{},
-			Id:       a.Data.Id,
-			Username: a.Data.Username,
-			Name:     a.Data.Name,
-		}
+func MatchProfile(i interface{}) orm.Profile {
+	profileRes, ok := i.(ProfileResponse)
+	if !ok {
+		log.Fatal(ok)
+	}
 
-		_ = orm.GetDb().Create(&profileModel)
+	return orm.Profile{
+		Model:    gorm.Model{},
+		Id:       profileRes.Data.Id,
+		Username: profileRes.Data.Username,
+		Name:     profileRes.Data.Name,
 	}
 }
 

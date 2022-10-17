@@ -25,5 +25,5 @@ func init() {
 }
 
 func main() {
-	t.GetProfiles()
+	t.GetData()
 }

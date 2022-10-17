@@ -4,7 +4,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type GormProfile struct {
+type Profile struct {
 	gorm.Model
 	Id       string
 	Username string
