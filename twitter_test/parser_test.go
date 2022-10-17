@@ -44,7 +44,7 @@ func TestParseProfileResponse(t *testing.T) {
 
 }
 
-func TestParsesTimeLines(t *testing.T) {
+func TestParsesTimelines(t *testing.T) {
 	response := []byte(`{
 	    "data": [
 	        {
@@ -125,17 +125,18 @@ func TestParsesTimeLines(t *testing.T) {
 	        "oldest_id": "1581043668206891008"
 	    }
 	 }`)
-	var TimeLineResponse = twitter.TimelineResponse{}
+	var timelineResponse = twitter.TimelineResponse{}
 
-	_ = parser.ParseTimeline(response, &TimeLineResponse)
+	_ = parser.ParseTimeline(response, &timelineResponse)
 
-	if assert.NotNil(t, TimeLineResponse.Data) && assert.NotNil(t, TimeLineResponse.MetaData) {
-		assert.Equal(t, TimeLineResponse.Data[0].Id, "1582051114941566976")
-		assert.Equal(t, TimeLineResponse.Data[0].Text, "Your delivery is being prepared. 📦\n\nNorthrop Grumman's next cargo mission to the @Space_Station will deliver new experiments studying the dynamics of mudflows, growing crops in space, and fertility treatments—all for the benefit of humanity: https://t.co/bGCuPQv6a1 https://t.co/JLZWuwCJJx")
-		assert.Equal(t, TimeLineResponse.Data[6].Id, "1581056289282482176")
-		assert.Equal(t, TimeLineResponse.Data[6].Text, "RT @nasahqphoto: Welcome home! Crew-4 NASA astronauts @astro_watkins, @astro_farmerbob, @astro_kjell, and @ESA’s @AstroSamantha are seen in…")
-		assert.Equal(t, TimeLineResponse.MetaData.NextToken, "7140dibdnow9c7btw423wugb5ysor0cpuq8gmvxycpcmw")
-		assert.Equal(t, TimeLineResponse.MetaData.ResultCount, 10)
+	if assert.NotNil(t, timelineResponse.Data) && assert.NotNil(t, timelineResponse.MetaData) {
+		fmt.Println(timelineResponse.Data[0].Text)
+		assert.Equal(t, "1582051114941566976", timelineResponse.Data[0].Id)
+		assert.Equal(t, "Your delivery is being prepared. 📦\n\nNorthrop Grumman's next cargo mission to the @Space_Station will deliver new experiments studying the dynamics of mudflows, growing crops in space, and fertility treatments—all for the benefit of humanity: https://t.co/bGCuPQv6a1 https://t.co/JLZWuwCJJx", timelineResponse.Data[0].Text)
+		assert.Equal(t, "1581056289282482176", timelineResponse.Data[6].Id)
+		assert.Equal(t, "RT @nasahqphoto: Welcome home! Crew-4 NASA astronauts @astro_watkins, @astro_farmerbob, @astro_kjell, and @ESA’s @AstroSamantha are seen in…", timelineResponse.Data[6].Text)
+		assert.Equal(t, "7140dibdnow9c7btw423wugb5ysor0cpuq8gmvxycpcmw", timelineResponse.MetaData.NextToken)
+		assert.Equal(t, 10, timelineResponse.MetaData.ResultCount)
 	}
 
 }

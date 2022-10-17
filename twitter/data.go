@@ -21,8 +21,8 @@ type ProfileResponse struct {
 }
 
 type TimelineResponse struct {
-	Data     []Tweet
-	MetaData Meta
+	Data     []Tweet `json:"data"`
+	MetaData Meta    `json:"meta"`
 }
 
 //
