@@ -1,85 +1,37 @@
 package twitter
 
 import (
-	c "doescher.ninja/twitter-service/config"
-	"doescher.ninja/twitter-service/orm"
-	"encoding/json"
-	"gorm.io/gorm"
-	"io"
-	"log"
-	"os"
-	"strconv"
+	. "doescher.ninja/twitter-service/config"
+	"doescher.ninja/twitter-service/data"
+	"fmt"
 )
 
-func GetData() {
-	ids, err := readUserIds()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	for _, v := range ids {
-		profileResponse, err := RequestData(v)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		profile := MatchProfile(profileResponse)
-		_ = orm.GetDb().Create(&profile)
-	}
-}
-
-func MatchProfile(i interface{}) orm.Profile {
-	profileRes, ok := i.(ProfileResponse)
-	if !ok {
-		log.Fatal(ok)
-	}
-
-	return orm.Profile{
-		Model:    gorm.Model{},
-		Id:       profileRes.Data.Id,
-		Username: profileRes.Data.Username,
-		Name:     profileRes.Data.Name,
-	}
-}
-
-//func RequestData(endpoint string, response interface{}) {
-func RequestData(v int) (interface{}, error) {
-
-	url := c.UserById + strconv.FormatInt(int64(v), 10)
+func RequestTweets(id string) data.Tweets {
+	url := fmt.Sprintf(Const().TimelineById, id)
 	res, err := MakeRequest(url)
-	if err != nil {
-		log.Fatal(err)
-	}
 
-	var profileResponse ProfileResponse
+	var timelineResponse data.TimelineResponse
+
+	err = Parser{}.ParseResponse(res, &timelineResponse)
+	FatalIfError(err)
+
+	return data.TimelineResponse{
+		Tweets:   timelineResponse.Tweets,
+		MetaData: timelineResponse.MetaData,
+	}.Tweets
+
+}
+
+func RequestProfile(id string) data.Profile {
+	res, err := MakeRequest(Const().UserById + id)
+
+	var profileResponse data.ProfileResponse
 	err = Parser{}.ParseResponse(res, &profileResponse)
+	FatalIfError(err)
 
-	return profileResponse, err
-}
-
-func readUserIds() ([]int, error) {
-	file, err := os.Open("users.json")
-	if err != nil {
-		log.Fatal(err)
+	return data.Profile{
+		Id:       profileResponse.Data.Id,
+		Name:     profileResponse.Data.Name,
+		Username: profileResponse.Data.Username,
 	}
-
-	content, err := io.ReadAll(file)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	var userIds []int
-	err = json.Unmarshal(content, &userIds)
-	return userIds, err
-}
-
-func getTweetsForUser() {
-	// Get Id of last tweet saved
-	// if none saved, then we just get the last 10 tweets
-	// get the tweets
-	// if pagination, then get he next page of tweets
-	// if no pagination then finish
-	// save tweets in database
-	//
-
 }

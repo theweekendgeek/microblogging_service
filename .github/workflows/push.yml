@@ -1,0 +1,38 @@
+name: Go package
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 1.16
+          cache: true
+      - name: Install dependencies
+        run: |
+          go get ./...
+      - name: Build
+        run: go build -v ./...
+      - name: Test
+        env:
+          ENV: TEST
+        run: go test -v ./...
+      - name: gcp
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+      - id: 'deploy'
+        uses: 'google-github-actions/deploy-cloud-functions@v0'
+        with:
+          name: 'twitter-service'
+          runtime: 'go116'
+          memory_mb: 128
+          timeout: 60
+          max_instances: 1
+          entry_point: HelloGet
+          https_trigger_security_level: "secure_always"
+          secret_environment_variables: 'BEARER=projects/64263317129/secrets/BEARER/version/1,DB_HOST=projects/64263317129/secrets/DB_HOST/version/1,DB_PORT=projects/64263317129/secrets/DB_PORT/version/1,POSTGRES_DB=projects/64263317129/secrets/POSTGRES_DB/version/1,POSTGRES_PASSWORD=projects/64263317129/secrets/POSTGRES_PASSWORD/version/1,POSTGRES_USER=projects/64263317129/secrets/POSTGRES_USER/version/1'
+

@@ -1,9 +1,11 @@
 package twitter_test
 
 import (
+	"doescher.ninja/twitter-service/data"
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 import "doescher.ninja/twitter-service/twitter"
 
@@ -14,7 +16,7 @@ func init() {
 }
 
 func TestParseProfileResponse(t *testing.T) {
-	var profileResponse twitter.ProfileResponse
+	var profileResponse data.ProfileResponse
 	response := []byte(`
 		{
 			"data": {
@@ -125,16 +127,16 @@ func TestParsesTimelines(t *testing.T) {
 	        "oldest_id": "1581043668206891008"
 	    }
 	 }`)
-	var timelineResponse = twitter.TimelineResponse{}
+	var timelineResponse = data.TimelineResponse{}
 
 	_ = parser.ParseResponse(response, &timelineResponse)
 
-	if assert.NotNil(t, timelineResponse.Data) && assert.NotNil(t, timelineResponse.MetaData) {
-		fmt.Println(timelineResponse.Data[0].Text)
-		assert.Equal(t, "1582051114941566976", timelineResponse.Data[0].Id)
-		assert.Equal(t, "Your delivery is being prepared. 📦\n\nNorthrop Grumman's next cargo mission to the @Space_Station will deliver new experiments studying the dynamics of mudflows, growing crops in space, and fertility treatments—all for the benefit of humanity: https://t.co/bGCuPQv6a1 https://t.co/JLZWuwCJJx", timelineResponse.Data[0].Text)
-		assert.Equal(t, "1581056289282482176", timelineResponse.Data[6].Id)
-		assert.Equal(t, "RT @nasahqphoto: Welcome home! Crew-4 NASA astronauts @astro_watkins, @astro_farmerbob, @astro_kjell, and @ESA’s @AstroSamantha are seen in…", timelineResponse.Data[6].Text)
+	if assert.NotNil(t, timelineResponse.Tweets) && assert.NotNil(t, timelineResponse.MetaData) {
+		fmt.Println(timelineResponse.Tweets[0].Text)
+		assert.Equal(t, "1582051114941566976", timelineResponse.Tweets[0].Id)
+		assert.Equal(t, "Your delivery is being prepared. 📦\n\nNorthrop Grumman's next cargo mission to the @Space_Station will deliver new experiments studying the dynamics of mudflows, growing crops in space, and fertility treatments—all for the benefit of humanity: https://t.co/bGCuPQv6a1 https://t.co/JLZWuwCJJx", timelineResponse.Tweets[0].Text)
+		assert.Equal(t, "1581056289282482176", timelineResponse.Tweets[6].Id)
+		assert.Equal(t, "RT @nasahqphoto: Welcome home! Crew-4 NASA astronauts @astro_watkins, @astro_farmerbob, @astro_kjell, and @ESA’s @AstroSamantha are seen in…", timelineResponse.Tweets[6].Text)
 		assert.Equal(t, "7140dibdnow9c7btw423wugb5ysor0cpuq8gmvxycpcmw", timelineResponse.MetaData.NextToken)
 		assert.Equal(t, 10, timelineResponse.MetaData.ResultCount)
 	}

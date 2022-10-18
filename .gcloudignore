@@ -1,0 +1,11 @@
+Makefile
+docker-compose.dev.yml
+README.md
+.gitignore
+.gcloudignore
+.env.test
+.editorconfig
+terraform
+docs
+cmd
+.github

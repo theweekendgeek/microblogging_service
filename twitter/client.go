@@ -1,6 +1,8 @@
 package twitter
 
 import (
+	. "doescher.ninja/twitter-service/config"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -16,14 +18,14 @@ func init() {
 func MakeRequest(url string) ([]byte, error) {
 
 	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	FatalIfError(err)
 
 	req.Header.Add("Authorization", "Bearer "+os.Getenv("BEARER"))
 	resp, err := client.Do(req)
-	if err != nil {
-		log.Fatal(err)
+	FatalIfError(err)
+
+	if resp.StatusCode != 200 {
+		log.Fatal(fmt.Sprintf("Got an Error with StatusCode %d", resp.StatusCode))
 	}
 
 	return io.ReadAll(resp.Body)

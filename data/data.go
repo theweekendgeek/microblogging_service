@@ -1,4 +1,4 @@
-package twitter
+package data
 
 type Profile struct {
 	Id       string `json:"id"`
@@ -20,7 +20,9 @@ type ProfileResponse struct {
 	Data Profile `json:"data"`
 }
 
+type Tweets []Tweet
+
 type TimelineResponse struct {
-	Data     []Tweet `json:"data"`
-	MetaData Meta    `json:"meta"`
+	Tweets   Tweets `json:"data"`
+	MetaData Meta   `json:"meta"`
 }

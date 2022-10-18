@@ -1,10 +1,10 @@
-package orm
+package persitence
 
 import (
+	. "doescher.ninja/twitter-service/config"
 	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"os"
 )
 
 var conn *gorm.DB
@@ -15,6 +15,14 @@ type connectionConfig struct {
 	User     string
 	Password string
 	Database string
+}
+
+func InitDatabase() {
+	err := connect()
+	FatalIfError(err)
+
+	err = migrate()
+	FatalIfError(err)
 }
 
 func generateConnectionString(c connectionConfig) string {
@@ -28,24 +36,23 @@ func generateConnectionString(c connectionConfig) string {
 	)
 }
 
-func Connect() error {
-	config := connectionConfig{
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_PORT"),
-		os.Getenv("POSTGRES_USER"),
-		os.Getenv("POSTGRES_PASSWORD"),
-		os.Getenv("POSTGRES_DB"),
-	}
-
+func connect() error {
+	c := Conf()
 	var err error
-	conn, err = gorm.Open(postgres.Open(generateConnectionString(config)), &gorm.Config{})
+	conn, err = gorm.Open(postgres.Open(generateConnectionString(connectionConfig{
+		c.DbHost,
+		c.DbPort,
+		c.DbUser,
+		c.DbPass,
+		c.DbName,
+	})), &gorm.Config{})
 	return err
 }
 
-func Migrate() error {
-	return conn.AutoMigrate(&Profile{})
+func migrate() error {
+	return conn.AutoMigrate(&Profile{}, &Tweet{})
 }
 
-func GetDb() *gorm.DB {
+func getDb() *gorm.DB {
 	return conn
 }
