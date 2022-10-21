@@ -17,13 +17,13 @@ func GetNewTweets() {
 	wg.Add(len(userIDs))
 
 	for _, id := range userIDs {
-		go retrieveNewTweets(id)
+		go retrieveNewTweets(id, &wg)
 
-		wg.Done()
 	}
+	wg.Wait()
 }
 
-func retrieveNewTweets(id string) {
+func retrieveNewTweets(id string, wg *sync.WaitGroup) {
 	_, profileID, noRecordError := persitence.GetUserByID(id)
 	if noRecordError != nil {
 		profileID = createProfile(id)
@@ -31,6 +31,8 @@ func retrieveNewTweets(id string) {
 
 	tweets := GetTweetsForUser(id)
 	persitence.CreateTweets(tweets, profileID)
+
+	wg.Done()
 }
 
 func createProfile(id string) uint {
