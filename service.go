@@ -16,7 +16,7 @@ func init() {
 	persitence.InitDatabase()
 }
 
-func HelloGet(w http.ResponseWriter, r *http.Request) {
+func HelloGet(_ http.ResponseWriter, _ *http.Request) {
 	fmt.Println("INVOKING FUNCTION")
 	business.GetNewTweets()
 	fmt.Println("FUNCTION DONE")
