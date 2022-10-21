@@ -15,7 +15,7 @@ func init() {
 	client = &http.Client{}
 }
 
-func MakeRequest(url string) ([]byte, error) {
+func MakeRequest(url string) (*[]byte, error) {
 
 	req, err := http.NewRequest("GET", url, nil)
 	FatalIfError(err)
@@ -28,5 +28,6 @@ func MakeRequest(url string) ([]byte, error) {
 		log.Fatal(fmt.Sprintf("Got an Error with StatusCode %d", resp.StatusCode))
 	}
 
-	return io.ReadAll(resp.Body)
+	a, err := io.ReadAll(resp.Body)
+	return &a, err
 }

@@ -3,7 +3,6 @@ package persitence
 import (
 	. "doescher.ninja/twitter-service/config"
 	"doescher.ninja/twitter-service/data"
-	"gorm.io/gorm"
 )
 
 func GetUserById(id string) (error, data.Profile, uint) {
@@ -29,16 +28,16 @@ func GetLastUser() (error, uint) {
 	return err, profile.ID
 }
 
-func CreateProfile(profile data.Profile) {
+func CreateProfile(profile *data.Profile) {
 	modelProfile := Profile{Name: profile.Name, TwitterId: profile.Id, Username: profile.Username}
 
 	result := getDb().Create(&modelProfile)
 	FatalIfError(result.Error)
 }
 
-func CreateTweets(tweets data.Tweets, userId uint) {
+func CreateTweets(tweets *data.Tweets, userId uint) {
 	var tweetModels []Tweet
-	for _, v := range tweets {
+	for _, v := range *tweets {
 		tweetModels = append(tweetModels, matchTweetToModel(v, userId))
 	}
 
@@ -48,7 +47,7 @@ func CreateTweets(tweets data.Tweets, userId uint) {
 
 func matchTweetToModel(tweet data.Tweet, userid uint) Tweet {
 	return Tweet{
-		Model:     gorm.Model{},
+		//Model:     gorm.Model{},
 		Text:      tweet.Text,
 		ProfileID: userid,
 	}
@@ -64,5 +63,6 @@ func matchProfile(model Profile) data.Profile {
 }
 
 func DeleteTweets() {
+	//goland:noinspection ALL
 	getDb().Exec("DELETE FROM tweets")
 }

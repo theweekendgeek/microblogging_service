@@ -5,12 +5,16 @@ import (
 	"doescher.ninja/twitter-service/data"
 	"doescher.ninja/twitter-service/persitence"
 	"doescher.ninja/twitter-service/twitter"
+	"sync"
 )
 
 func GetNewTweets() {
 	persitence.DeleteTweets()
 	userIds, err := config.ReadUserIds()
 	config.FatalIfError(err)
+
+	wg := sync.WaitGroup{}
+	wg.Add(len(userIds))
 
 	for _, id := range userIds {
 		noRecordError, _, profileId := persitence.GetUserById(id)
@@ -19,7 +23,8 @@ func GetNewTweets() {
 		}
 
 		tweets := GetTweetsForUser(id)
-		persitence.CreateTweets(tweets, profileId)
+		go persitence.CreateTweets(&tweets, profileId)
+		wg.Done()
 	}
 }
 
@@ -31,7 +36,8 @@ func createProfile(profileId uint, id string) uint {
 		profileId = lastUserId + 1
 	}
 
-	persitence.CreateProfile(GetUserProfile(id))
+	profile := GetUserProfile(id)
+	persitence.CreateProfile(&profile)
 	return profileId
 }
 
