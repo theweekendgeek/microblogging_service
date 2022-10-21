@@ -14,3 +14,4 @@ On every call the Tweet table is wiped and only the last 20 tweets for a given u
 - [ ] change the way the user ids are passed
 - [ ] add service account creation + function authorization to terraform
 - [ ] simplify handling of .env files
+- [ ] clean up old tweets
