@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-func RequestTweets(id string) data.Tweets {
+func RequestTweets(id string) *data.Tweets {
 	url := fmt.Sprintf(Const().TimelineById, id)
 	res, err := MakeRequest(url)
 
@@ -15,23 +15,25 @@ func RequestTweets(id string) data.Tweets {
 	err = Parser{}.ParseResponse(res, &timelineResponse)
 	FatalIfError(err)
 
-	return data.TimelineResponse{
+	tweets := data.TimelineResponse{
 		Tweets:   timelineResponse.Tweets,
 		MetaData: timelineResponse.MetaData,
 	}.Tweets
+	return &tweets
 
 }
 
-func RequestProfile(id string) data.Profile {
+func RequestProfile(id string) *data.Profile {
 	res, err := MakeRequest(Const().UserById + id)
 
 	var profileResponse data.ProfileResponse
 	err = Parser{}.ParseResponse(res, &profileResponse)
 	FatalIfError(err)
 
-	return data.Profile{
+	profile := data.Profile{
 		Id:       profileResponse.Data.Id,
 		Name:     profileResponse.Data.Name,
 		Username: profileResponse.Data.Username,
 	}
+	return &profile
 }
