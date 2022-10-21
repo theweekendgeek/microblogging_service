@@ -18,15 +18,15 @@ func isTest() bool {
 	return setEnvironment() == Const().EnvTest
 }
 
-func ReadUserIds() ([]string, error) {
+func ReadUserIDs() ([]string, error) {
 	readFile, err := os.ReadFile(Conf().FilePath)
 	FatalIfError(err)
 
-	var userIds []string
-	err = json.Unmarshal(readFile, &userIds)
+	var userIDs []string
+	err = json.Unmarshal(readFile, &userIDs)
 	FatalIfError(err)
 
-	return userIds, err
+	return userIDs, err
 }
 
 func FatalIfError(err error) {

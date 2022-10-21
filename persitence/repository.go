@@ -5,7 +5,7 @@ import (
 	"doescher.ninja/twitter-service/data"
 )
 
-func GetUserById(id string) (data.Profile, uint, error) {
+func GetUserByID(id string) (data.Profile, uint, error) {
 	var user Profile
 
 	err := getDb().Where(&Profile{
@@ -29,16 +29,16 @@ func GetLastUser() (uint, error) {
 }
 
 func CreateProfile(profile *data.Profile) {
-	modelProfile := Profile{Name: profile.Name, TwitterId: profile.Id, Username: profile.Username}
+	modelProfile := Profile{Name: profile.Name, TwitterId: profile.ID, Username: profile.Username}
 
 	result := getDb().Create(&modelProfile)
 	FatalIfError(result.Error)
 }
 
-func CreateTweets(tweets *data.Tweets, userId uint) {
+func CreateTweets(tweets *data.Tweets, userID uint) {
 	var tweetModels []Tweet
 	for _, v := range *tweets {
-		tweetModels = append(tweetModels, matchTweetToModel(v, userId))
+		tweetModels = append(tweetModels, matchTweetToModel(v, userID))
 	}
 
 	err := getDb().Create(&tweetModels).Error
@@ -54,7 +54,7 @@ func matchTweetToModel(tweet data.Tweet, userid uint) Tweet {
 
 func matchProfile(model Profile) data.Profile {
 	return data.Profile{
-		Id:       model.TwitterId,
+		ID:       model.TwitterId,
 		Name:     model.Name,
 		Username: model.Username,
 	}

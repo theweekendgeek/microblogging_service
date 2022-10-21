@@ -35,12 +35,12 @@ func TestParseProfileResponse(t *testing.T) {
 	fmt.Println(profileResponse)
 	if assert.NotNil(t, profileResponse.Data) {
 		assert.Equal(t, "NASA", profileResponse.Data.Name)
-		assert.Equal(t, "11348282", profileResponse.Data.Id)
+		assert.Equal(t, "11348282", profileResponse.Data.ID)
 		assert.Equal(t, "NASA", profileResponse.Data.Username)
 
 	}
 
-	//if twitter.ProfileResponse(parsedResponse).Data.Id == "" {
+	//if twitter.ProfileResponse(parsedResponse).Data.ID == "" {
 	//
 	//}
 

@@ -10,13 +10,13 @@ import (
 
 func GetNewTweets() {
 	persitence.DeleteTweets()
-	userIds, err := config.ReadUserIds()
+	userIDs, err := config.ReadUserIDs()
 	config.FatalIfError(err)
 
 	wg := sync.WaitGroup{}
-	wg.Add(len(userIds))
+	wg.Add(len(userIDs))
 
-	for _, id := range userIds {
+	for _, id := range userIDs {
 		go retrieveNewTweets(id)
 
 		wg.Done()
@@ -24,28 +24,28 @@ func GetNewTweets() {
 }
 
 func retrieveNewTweets(id string) {
-	_, profileId, noRecordError := persitence.GetUserById(id)
+	_, profileID, noRecordError := persitence.GetUserByID(id)
 	if noRecordError != nil {
-		profileId = createProfile(id)
+		profileID = createProfile(id)
 	}
 
 	tweets := GetTweetsForUser(id)
-	persitence.CreateTweets(tweets, profileId)
+	persitence.CreateTweets(tweets, profileID)
 }
 
 func createProfile(id string) uint {
-	lastUserId, noRecordError := persitence.GetLastUser()
+	lastUserID, noRecordError := persitence.GetLastUser()
 
-	var profileId uint
+	var profileID uint
 	if noRecordError != nil {
-		profileId = 1
+		profileID = 1
 	} else {
-		profileId = lastUserId + 1
+		profileID = lastUserID + 1
 	}
 
 	profile := GetUserProfile(id)
 	persitence.CreateProfile(profile)
-	return profileId
+	return profileID
 }
 
 func GetTweetsForUser(id string) *data.Tweets {
