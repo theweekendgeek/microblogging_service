@@ -15,7 +15,7 @@ func init() {
 	client = &http.Client{}
 }
 
-func MakeRequest(url string) (*[]byte, error) {
+func MakeRequest(url string) *[]byte {
 
 	req, err := http.NewRequest("GET", url, nil)
 	FatalIfError(err)
@@ -29,5 +29,6 @@ func MakeRequest(url string) (*[]byte, error) {
 	}
 
 	a, err := io.ReadAll(resp.Body)
-	return &a, err
+	FatalIfError(err)
+	return &a
 }
