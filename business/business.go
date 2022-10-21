@@ -5,7 +5,6 @@ import (
 	"doescher.ninja/twitter-service/data"
 	"doescher.ninja/twitter-service/persitence"
 	"doescher.ninja/twitter-service/twitter"
-	"sync"
 )
 
 func GetNewTweets() {
@@ -13,13 +12,13 @@ func GetNewTweets() {
 	userIDs, err := config.ReadUserIDs()
 	config.FatalIfError(err)
 
-	wg := sync.WaitGroup{}
-	wg.Add(len(userIDs))
+	//wg := sync.WaitGroup{}
+	//wg.Add(len(userIDs))
 
 	for _, id := range userIDs {
-		go retrieveNewTweets(id)
+		retrieveNewTweets(id)
 
-		wg.Done()
+		//wg.Done()
 	}
 }
 
