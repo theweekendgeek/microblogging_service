@@ -2,8 +2,8 @@ package config
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"log"
+	"os"
 )
 
 func IsProd() bool {
@@ -19,7 +19,7 @@ func isTest() bool {
 }
 
 func ReadUserIds() ([]string, error) {
-	readFile, err := ioutil.ReadFile(Conf().FilePath)
+	readFile, err := os.ReadFile(Conf().FilePath)
 	FatalIfError(err)
 
 	var userIds []string
