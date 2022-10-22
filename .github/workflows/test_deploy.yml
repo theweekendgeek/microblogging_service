@@ -37,4 +37,5 @@ jobs:
           max_instances: 1
           entry_point: HelloGet
           https_trigger_security_level: "secure_always"
+          env_vars: "ENV=PROD"
           secret_environment_variables: "BEARER=projects/64263317129/secrets/BEARER/version/1,DB_HOST=projects/64263317129/secrets/DB_HOST/version/1,DB_PORT=projects/64263317129/secrets/DB_PORT/version/1,POSTGRES_DB=projects/64263317129/secrets/POSTGRES_DB/version/1,POSTGRES_PASSWORD=projects/64263317129/secrets/POSTGRES_PASSWORD/version/1,POSTGRES_USER=projects/64263317129/secrets/POSTGRES_USER/version/1"
