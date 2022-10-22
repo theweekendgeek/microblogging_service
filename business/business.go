@@ -53,8 +53,12 @@ func saveUser(id string) uint {
 }
 
 func getTweetsForUser(id string) *data.Tweets {
+
 	// get latest tweet from database
+	_, err := persitence.GetLastSavedTweet(id)
+	utils.FatalIfError(err)
 	// request new tweets since latest
+
 	// paginate if necessary
 	return apiClient.RequestTweets(id)
 
