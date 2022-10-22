@@ -2,6 +2,7 @@ package persitence
 
 import (
 	. "doescher.ninja/twitter-service/config"
+	. "doescher.ninja/twitter-service/utils"
 	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -17,6 +18,7 @@ type connectionConfig struct {
 	Database string
 }
 
+// InitDatabase creates a database connections and updates the schema
 func InitDatabase() {
 	err := connect()
 	FatalIfError(err)

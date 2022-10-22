@@ -4,6 +4,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// Profile represents a row in the profiles table
 type Profile struct {
 	gorm.Model
 	TwitterId string
@@ -12,6 +13,7 @@ type Profile struct {
 	Tweets    []Tweet
 }
 
+// Tweet represents a row in the tweets table
 type Tweet struct {
 	gorm.Model
 	Text      string

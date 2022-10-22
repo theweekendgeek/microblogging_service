@@ -1,7 +1,7 @@
 package twitter
 
 import (
-	. "doescher.ninja/twitter-service/config"
+	. "doescher.ninja/twitter-service/utils"
 	"fmt"
 	"io"
 	"log"

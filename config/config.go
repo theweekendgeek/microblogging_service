@@ -1,3 +1,4 @@
+// Package config holds constants + configuration
 package config
 
 import (
@@ -7,14 +8,14 @@ import (
 )
 
 func getEnvFileName() string {
-	if isTest() {
+	if getEnv() == Const().EnvTest {
 		return Const().EnvFileTest
 	}
 	return Const().EnvFileLocal
 }
 
 func init() {
-	if !IsProd() {
+	if !(getEnv() == Const().EnvProd) {
 		name := getEnvFileName()
 		err := godotenv.Load(name)
 		if err != nil {
@@ -22,6 +23,10 @@ func init() {
 		}
 	}
 	loadConfig()
+}
+
+func getEnv() string {
+	return os.Getenv("ENV")
 }
 
 func setEnvironment() string {
@@ -59,13 +64,14 @@ func loadConfig() {
 }
 
 func setUserFilePath() string {
-	if IsProd() {
+	if getEnv() == Const().EnvProd {
 		return Const().UsersFileCloud
 	}
 
 	return Const().UsersFileLocal
 }
 
+// Conf returns the Config struct
 func Conf() Config {
 	return conf
 }

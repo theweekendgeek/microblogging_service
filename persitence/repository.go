@@ -1,8 +1,8 @@
 package persitence
 
 import (
-	. "doescher.ninja/twitter-service/config"
 	"doescher.ninja/twitter-service/data"
+	. "doescher.ninja/twitter-service/utils"
 )
 
 func GetUserByID(id string) (data.Profile, uint, error) {

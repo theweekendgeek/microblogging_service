@@ -133,9 +133,9 @@ func TestParsesTimelines(t *testing.T) {
 
 	if assert.NotNil(t, timelineResponse.Tweets) && assert.NotNil(t, timelineResponse.MetaData) {
 		fmt.Println(timelineResponse.Tweets[0].Text)
-		assert.Equal(t, "1582051114941566976", timelineResponse.Tweets[0].Id)
+		assert.Equal(t, "1582051114941566976", timelineResponse.Tweets[0].ID)
 		assert.Equal(t, "Your delivery is being prepared. 📦\n\nNorthrop Grumman's next cargo mission to the @Space_Station will deliver new experiments studying the dynamics of mudflows, growing crops in space, and fertility treatments—all for the benefit of humanity: https://t.co/bGCuPQv6a1 https://t.co/JLZWuwCJJx", timelineResponse.Tweets[0].Text)
-		assert.Equal(t, "1581056289282482176", timelineResponse.Tweets[6].Id)
+		assert.Equal(t, "1581056289282482176", timelineResponse.Tweets[6].ID)
 		assert.Equal(t, "RT @nasahqphoto: Welcome home! Crew-4 NASA astronauts @astro_watkins, @astro_farmerbob, @astro_kjell, and @ESA’s @AstroSamantha are seen in…", timelineResponse.Tweets[6].Text)
 		assert.Equal(t, "7140dibdnow9c7btw423wugb5ysor0cpuq8gmvxycpcmw", timelineResponse.MetaData.NextToken)
 		assert.Equal(t, 10, timelineResponse.MetaData.ResultCount)
