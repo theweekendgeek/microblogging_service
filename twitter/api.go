@@ -9,32 +9,43 @@ import (
 
 func RequestTweets(id string) *data.Tweets {
 	url := fmt.Sprintf(Const().EndpointTimelineByID, id)
-	res := MakeRequest(url)
 
-	var timelineResponse data.TimelineResponse
+	timelineResponse := request[data.TimelineResponse](url)
+	tweets := mapTimeline(timelineResponse)
 
-	err := Parser{}.ParseResponse(res, &timelineResponse)
+	return &tweets
+}
+
+func request[T any](url string) T {
+	resByte := MakeRequest(url)
+
+	var resObj T
+	err := Parser{}.ParseResponse(resByte, &resObj)
 	utils.FatalIfError(err)
 
-	tweets := data.TimelineResponse{
-		Tweets:   timelineResponse.Tweets,
-		MetaData: timelineResponse.MetaData,
-	}.Tweets
-	return &tweets
-
+	return resObj
 }
 
 func RequestProfile(id string) *data.Profile {
-	res := MakeRequest(Const().EndpointUserByID + id)
+	url := Const().EndpointUserByID + id
 
-	var profileResponse data.ProfileResponse
-	err := Parser{}.ParseResponse(res, &profileResponse)
-	utils.FatalIfError(err)
+	profileResponse := request[data.ProfileResponse](url)
+	profile := mapProfile(profileResponse)
 
-	profile := data.Profile{
+	return &profile
+}
+
+func mapProfile(profileResponse data.ProfileResponse) data.Profile {
+	return data.Profile{
 		ID:       profileResponse.Data.ID,
 		Name:     profileResponse.Data.Name,
 		Username: profileResponse.Data.Username,
 	}
-	return &profile
+}
+
+func mapTimeline(timelineResponse data.TimelineResponse) data.Tweets {
+	return data.TimelineResponse{
+		Tweets:   timelineResponse.Tweets,
+		MetaData: timelineResponse.MetaData,
+	}.Tweets
 }
