@@ -7,10 +7,12 @@ import (
 	"fmt"
 )
 
+// APIClient is used to interact with the Twitter API
 type APIClient struct{}
 
+// RequestTweets returns a timeline for a given user id
 func (APIClient) RequestTweets(id string, opts QueryOptions) *data.TimelineResponse {
-	url := buildTimelineUrl(opts)
+	url := buildTimelineURL(opts)
 	url = fmt.Sprintf(url, id)
 
 	timelineResponse := request[data.TimelineResponse](url)
@@ -19,6 +21,7 @@ func (APIClient) RequestTweets(id string, opts QueryOptions) *data.TimelineRespo
 	return &tweets
 }
 
+// RequestUser returns the profile for a given user id
 func (APIClient) RequestUser(id string) *data.Profile {
 	url := Const().EndpointUserByID + id
 

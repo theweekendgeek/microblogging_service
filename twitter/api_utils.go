@@ -6,10 +6,11 @@ import (
 	"strings"
 )
 
+// QueryOptions configure query parameters for timeline requests
 type QueryOptions struct {
-	Max             int
-	SinceID         string
-	PaginationToken string
+	Max             int    // maximum number of tweets to request
+	SinceID         string // get tweets newer than this id
+	PaginationToken string // paginate the timeline
 }
 
 func buildQueryParams(options QueryOptions) string {
@@ -38,6 +39,6 @@ func buildQueryParams(options QueryOptions) string {
 	return queryString
 }
 
-func buildTimelineUrl(options QueryOptions) string {
+func buildTimelineURL(options QueryOptions) string {
 	return config.Const().EndpointTimelineByID + buildQueryParams(options)
 }

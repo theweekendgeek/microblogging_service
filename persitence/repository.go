@@ -45,13 +45,14 @@ func CreateTweets(tweets *data.Tweets, userID uint) {
 	utils.FatalIfError(err)
 }
 
-func GetLastSavedTweet(twitterId string) (data.Tweet, error) {
+// GetLastSavedTweet get the newest tweet for a user
+func GetLastSavedTweet(twitterID string) (data.Tweet, error) {
 	var tweet Tweet
 
-	_, modelId, err := GetUserByID(twitterId)
+	_, modelID, err := GetUserByID(twitterID)
 	utils.FatalIfError(err)
 
-	err = getDb().Where(Tweet{ProfileID: modelId}).Last(&tweet).Error
+	err = getDb().Where(Tweet{ProfileID: modelID}).Last(&tweet).Error
 	return matchModelToTweet(tweet), err
 }
 
