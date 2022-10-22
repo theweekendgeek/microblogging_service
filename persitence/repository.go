@@ -5,19 +5,19 @@ import (
 	"doescher.ninja/twitter-service/utils"
 )
 
-func GetUserByID(id string) (data.Profile, uint, error) {
+// TODO: find a better way to return ids or models
+func GetUserByID(twitterID string) (data.Profile, uint, error) {
 	var user Profile
 
 	err := getDb().Where(&Profile{
-		TwitterId: id,
+		TwitterId: twitterID,
 	}).First(&user).Error
 
 	if err != nil {
 		return data.Profile{}, user.ID, err
 	}
 
-	profile := matchProfile(user)
-	return profile, user.ID, err
+	return matchProfile(user), user.ID, err
 
 }
 
@@ -45,9 +45,28 @@ func CreateTweets(tweets *data.Tweets, userID uint) {
 	utils.FatalIfError(err)
 }
 
+// GetLastSavedTweet get the newest tweet for a user
+func GetLastSavedTweet(twitterID string) (data.Tweet, error) {
+	var tweet Tweet
+
+	_, modelID, err := GetUserByID(twitterID)
+	utils.FatalIfError(err)
+
+	err = getDb().Where(Tweet{ProfileID: modelID}).Last(&tweet).Error
+	return matchModelToTweet(tweet), err
+}
+
+func matchModelToTweet(tweet Tweet) data.Tweet {
+	return data.Tweet{
+		TwitterID: tweet.TwitterID,
+		Text:      tweet.Text,
+	}
+}
+
 func matchTweetToModel(tweet data.Tweet, userid uint) Tweet {
 	return Tweet{
 		Text:      tweet.Text,
+		TwitterID: tweet.TwitterID,
 		ProfileID: userid,
 	}
 }
@@ -61,7 +80,7 @@ func matchProfile(model Profile) data.Profile {
 
 }
 
-func DeleteTweets() {
-	//goland:noinspection ALL
-	getDb().Exec("DELETE FROM tweets")
-}
+//func DeleteTweets() {
+//	//goland:noinspection ALL
+//	getDb().Exec("DELETE FROM tweets")
+//}
