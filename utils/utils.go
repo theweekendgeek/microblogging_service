@@ -1,3 +1,4 @@
+// Package utils provides some simple utility methods
 package utils
 
 import (
