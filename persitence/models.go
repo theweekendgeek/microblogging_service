@@ -17,5 +17,6 @@ type Profile struct {
 type Tweet struct {
 	gorm.Model
 	Text      string
+	TwitterID string
 	ProfileID uint
 }

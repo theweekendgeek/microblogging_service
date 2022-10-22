@@ -48,6 +48,7 @@ func CreateTweets(tweets *data.Tweets, userID uint) {
 func matchTweetToModel(tweet data.Tweet, userid uint) Tweet {
 	return Tweet{
 		Text:      tweet.Text,
+		TwitterID: tweet.ID,
 		ProfileID: userid,
 	}
 }
