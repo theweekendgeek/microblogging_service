@@ -8,6 +8,8 @@ import (
 	"sync"
 )
 
+var apiClient = twitter.ApiClient{}
+
 func RequestAndSaveTweets() {
 	persitence.DeleteTweets()
 
@@ -54,10 +56,10 @@ func getTweetsForUser(id string) *data.Tweets {
 	// get latest tweet from database
 	// request new tweets since latest
 	// paginate if necessary
-	return twitter.RequestTweets(id)
+	return apiClient.RequestTweets(id)
 
 }
 
 func getUser(id string) *data.Profile {
-	return twitter.RequestProfile(id)
+	return apiClient.RequestUser(id)
 }

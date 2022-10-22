@@ -7,7 +7,9 @@ import (
 	"fmt"
 )
 
-func RequestTweets(id string) *data.Tweets {
+type ApiClient struct{}
+
+func (ApiClient) RequestTweets(id string) *data.Tweets {
 	url := fmt.Sprintf(Const().EndpointTimelineByID, id)
 
 	timelineResponse := request[data.TimelineResponse](url)
@@ -16,17 +18,7 @@ func RequestTweets(id string) *data.Tweets {
 	return &tweets
 }
 
-func request[T any](url string) T {
-	resByte := MakeRequest(url)
-
-	var resObj T
-	err := Parser{}.ParseResponse(resByte, &resObj)
-	utils.FatalIfError(err)
-
-	return resObj
-}
-
-func RequestProfile(id string) *data.Profile {
+func (ApiClient) RequestUser(id string) *data.Profile {
 	url := Const().EndpointUserByID + id
 
 	profileResponse := request[data.ProfileResponse](url)
@@ -48,4 +40,14 @@ func mapTimeline(timelineResponse data.TimelineResponse) data.Tweets {
 		Tweets:   timelineResponse.Tweets,
 		MetaData: timelineResponse.MetaData,
 	}.Tweets
+}
+
+func request[T any](url string) T {
+	resByte := MakeRequest(url)
+
+	var resObj T
+	err := Parser{}.ParseResponse(resByte, &resObj)
+	utils.FatalIfError(err)
+
+	return resObj
 }
