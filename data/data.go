@@ -20,8 +20,8 @@ type Meta struct {
 	ResultCount int    `json:"result_count"`
 }
 
-// ProfileResponse is the result of requesting a user's profile
-type ProfileResponse struct {
+// UserReponse is the result of requesting a user's profile
+type UserReponse struct {
 	Data Profile `json:"data"`
 }
 

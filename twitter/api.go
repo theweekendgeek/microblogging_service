@@ -13,7 +13,7 @@ func (ApiClient) RequestTweets(id string) *data.Tweets {
 	url := fmt.Sprintf(Const().EndpointTimelineByID, id)
 
 	timelineResponse := request[data.TimelineResponse](url)
-	tweets := mapTimeline(timelineResponse)
+	tweets := getTweets(timelineResponse)
 
 	return &tweets
 }
@@ -21,25 +21,18 @@ func (ApiClient) RequestTweets(id string) *data.Tweets {
 func (ApiClient) RequestUser(id string) *data.Profile {
 	url := Const().EndpointUserByID + id
 
-	profileResponse := request[data.ProfileResponse](url)
-	profile := mapProfile(profileResponse)
+	userResponse := request[data.UserReponse](url)
+	profile := getUser(userResponse)
 
 	return &profile
 }
 
-func mapProfile(profileResponse data.ProfileResponse) data.Profile {
-	return data.Profile{
-		ID:       profileResponse.Data.ID,
-		Name:     profileResponse.Data.Name,
-		Username: profileResponse.Data.Username,
-	}
+func getUser(profileResponse data.UserReponse) data.Profile {
+	return profileResponse.Data
 }
 
-func mapTimeline(timelineResponse data.TimelineResponse) data.Tweets {
-	return data.TimelineResponse{
-		Tweets:   timelineResponse.Tweets,
-		MetaData: timelineResponse.MetaData,
-	}.Tweets
+func getTweets(timelineResponse data.TimelineResponse) data.Tweets {
+	return timelineResponse.Tweets
 }
 
 func request[T any](url string) T {

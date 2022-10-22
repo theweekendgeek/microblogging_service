@@ -16,7 +16,7 @@ func init() {
 }
 
 func TestParseProfileResponse(t *testing.T) {
-	var profileResponse data.ProfileResponse
+	var profileResponse data.UserReponse
 	response := []byte(`
 		{
 			"data": {
