@@ -24,7 +24,6 @@ func MakeRequest(url string) *[]byte {
 	utils.FatalIfError(err)
 
 	if resp.StatusCode != 200 {
-		//log.Println()
 		log.Fatal(fmt.Sprintf("Got an Error with StatusCode %d", resp.StatusCode))
 	}
 
