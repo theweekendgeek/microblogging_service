@@ -71,6 +71,9 @@ func getTweetsForUser(id string) *data.Tweets {
 	for {
 		// request new tweets since latest
 		timelinePointer := apiClient.RequestTweets(id, params)
+		if timelinePointer.MetaData.ResultCount == 0 {
+			break
+		}
 		tweets = append(tweets, timelinePointer.Tweets...)
 
 		if getTweetsForNewUser(notFoundError) || noFurtherTweets(timelinePointer) {
