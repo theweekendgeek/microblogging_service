@@ -8,8 +8,6 @@ import (
 	"sync"
 )
 
-var apiClient = twitter.APIClient{}
-
 func RequestAndSaveTweets() {
 	userIDs := utils.ReadUserIDs()
 
@@ -55,50 +53,40 @@ func saveUser(id string) uint {
 func getTweetsForUser(id string) *data.Tweets {
 
 	params := twitter.QueryOptions{}
-	// get latest tweet from database
-	tweet, notFoundError := persitence.GetLastSavedTweet(id)
 
-	// if we have tweets, set a SinceId to just get new ones
-	if notFoundError == nil {
+	tweet, notFoundError := persitence.GetLastSavedTweet(id)
+	isNewUser := notFoundError != nil
+
+	if !isNewUser {
 		params.SinceID = tweet.TwitterID
 	}
 
 	var tweets data.Tweets
-
-	loop := 0
 	for {
-		// request new tweets since latest
-		timelinePointer := apiClient.RequestTweets(id, params)
-		if timelinePointer.MetaData.ResultCount == 0 {
-			break
-		}
-		tweets = append(tweets, timelinePointer.Tweets...)
+		//timeline := apiClient.RequestTweets(id, params)
+		timeline := twitter.Request[data.TimelineResponse](twitter.GetUrlForId(id, params))
 
-		if getTweetsForNewUser(notFoundError) || noFurtherTweets(timelinePointer) {
+		if timeline.MetaData.ResultCount == 0 {
 			break
 		}
 
-		// paginate if necessary
-		params.PaginationToken = timelinePointer.MetaData.NextToken
-		loop++
+		tweets = append(tweets, timeline.Tweets...)
 
-		if loop == 4 { // limit number of loops to 5 for now
+		if isNewUser || noFurtherTweets(timeline) {
 			break
 		}
+
+		params.PaginationToken = timeline.MetaData.NextToken
 	}
 
 	return &tweets
-
 }
 
 func noFurtherTweets(timelinePointer *data.TimelineResponse) bool {
 	return timelinePointer.MetaData.NextToken == ""
 }
 
-func getTweetsForNewUser(notFoundError error) bool {
-	return notFoundError != nil
-}
-
 func getUser(id string) *data.Profile {
-	return apiClient.RequestUser(id)
+
+	return twitter.Request[data.Profile](twitter.BuildProfileUrl(id))
 }
