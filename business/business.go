@@ -20,6 +20,7 @@ func GetNewTweets() {
 		go retrieveNewTweets(id, &wg)
 
 	}
+
 	wg.Wait()
 }
 
