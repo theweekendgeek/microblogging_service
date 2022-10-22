@@ -7,9 +7,9 @@ import (
 	"fmt"
 )
 
-type ApiClient struct{}
+type APIClient struct{}
 
-func (ApiClient) RequestTweets(id string) *data.Tweets {
+func (APIClient) RequestTweets(id string) *data.Tweets {
 	url := fmt.Sprintf(Const().EndpointTimelineByID, id)
 
 	timelineResponse := request[data.TimelineResponse](url)
@@ -18,7 +18,7 @@ func (ApiClient) RequestTweets(id string) *data.Tweets {
 	return &tweets
 }
 
-func (ApiClient) RequestUser(id string) *data.Profile {
+func (APIClient) RequestUser(id string) *data.Profile {
 	url := Const().EndpointUserByID + id
 
 	userResponse := request[data.UserReponse](url)

@@ -8,7 +8,7 @@ import (
 	"sync"
 )
 
-var apiClient = twitter.ApiClient{}
+var apiClient = twitter.APIClient{}
 
 func RequestAndSaveTweets() {
 	persitence.DeleteTweets()
