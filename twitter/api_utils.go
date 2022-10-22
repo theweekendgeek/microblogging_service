@@ -39,6 +39,7 @@ func buildQueryParams(options QueryOptions) string {
 	return queryString
 }
 
+// TODO: simplify these three
 func buildTimelineURL(options QueryOptions) string {
 	return config.Const().EndpointTimelineByID + buildQueryParams(options)
 }
