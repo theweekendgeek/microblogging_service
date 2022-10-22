@@ -51,6 +51,9 @@ func saveUser(id string) uint {
 }
 
 func getTweetsForUser(id string) *data.Tweets {
+	// get latest tweet from database
+	// request new tweets since latest
+	// paginate if necessary
 	return twitter.RequestTweets(id)
 
 }
