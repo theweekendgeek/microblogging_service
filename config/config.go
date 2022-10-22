@@ -31,10 +31,7 @@ func LoadEnvIfNeeded() {
 }
 
 func runningTestOrLocal() bool {
-	fmt.Printf("os.GetEnv: %s \n", os.Getenv("ENV"))
-	fmt.Printf("Const().EnvProd: %s \n", Const().EnvProd)
-	fmt.Printf("getEnv() == Const().EnvProd %v \n", getEnv() == Const().EnvProd)
-	fmt.Printf("!(getEnv() == Const().EnvProd) %v \n", !(getEnv() == Const().EnvProd))
+	fmt.Printf("Running in enviroment: %s \n", os.Getenv("ENV"))
 	return !(getEnv() == Const().EnvProd)
 }
 

@@ -4,7 +4,7 @@ var baseURL = "https://api.twitter.com"
 var version = "/2"
 
 var getUserByID = "/users/"
-var timeLineByID = "/users/%s/tweets?max_results=20" //+ fmt.Sprintf("%d", Conf().MaxTweets)
+var timeLineByID = "/users/%s/tweets" //+ fmt.Sprintf("%d", Conf().MaxTweets)
 
 type Constants struct {
 	EndpointUserByID     string // uri to get a user profile by id
@@ -17,6 +17,7 @@ type Constants struct {
 	EnvProd              string // "PROD"
 	EnvTest              string // "TEST
 	EnvLocal             string // "DEV"
+	MaxTweets            int    // maximum number of tweets to get per request
 }
 
 func Const() Constants {
@@ -34,4 +35,5 @@ var constants = Constants{
 	EnvProd:              "PROD",
 	EnvTest:              "TEST",
 	EnvLocal:             "DEV",
+	MaxTweets:            20,
 }

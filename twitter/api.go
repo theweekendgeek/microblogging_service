@@ -7,13 +7,36 @@ import (
 	"fmt"
 )
 
-func RequestTweets(id string) *data.Tweets {
-	url := fmt.Sprintf(Const().EndpointTimelineByID, id)
+// APIClient is used to interact with the Twitter API
+type APIClient struct{}
+
+// RequestTweets returns a timeline for a given user id
+func (APIClient) RequestTweets(id string, opts QueryOptions) *data.TimelineResponse {
+	url := buildTimelineURL(opts)
+	url = fmt.Sprintf(url, id)
 
 	timelineResponse := request[data.TimelineResponse](url)
-	tweets := mapTimeline(timelineResponse)
+	tweets := getTweets(timelineResponse)
 
 	return &tweets
+}
+
+// RequestUser returns the profile for a given user id
+func (APIClient) RequestUser(id string) *data.Profile {
+	url := Const().EndpointUserByID + id
+
+	userResponse := request[data.UserReponse](url)
+	profile := getUser(userResponse)
+
+	return &profile
+}
+
+func getUser(profileResponse data.UserReponse) data.Profile {
+	return profileResponse.Data
+}
+
+func getTweets(timelineResponse data.TimelineResponse) data.TimelineResponse {
+	return timelineResponse
 }
 
 func request[T any](url string) T {
@@ -24,28 +47,4 @@ func request[T any](url string) T {
 	utils.FatalIfError(err)
 
 	return resObj
-}
-
-func RequestProfile(id string) *data.Profile {
-	url := Const().EndpointUserByID + id
-
-	profileResponse := request[data.ProfileResponse](url)
-	profile := mapProfile(profileResponse)
-
-	return &profile
-}
-
-func mapProfile(profileResponse data.ProfileResponse) data.Profile {
-	return data.Profile{
-		ID:       profileResponse.Data.ID,
-		Name:     profileResponse.Data.Name,
-		Username: profileResponse.Data.Username,
-	}
-}
-
-func mapTimeline(timelineResponse data.TimelineResponse) data.Tweets {
-	return data.TimelineResponse{
-		Tweets:   timelineResponse.Tweets,
-		MetaData: timelineResponse.MetaData,
-	}.Tweets
 }

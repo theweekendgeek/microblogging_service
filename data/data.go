@@ -10,8 +10,8 @@ type Profile struct {
 
 // Tweet represents a single tweet
 type Tweet struct {
-	ID   string `json:"id"`
-	Text string `json:"text"`
+	TwitterID string `json:"id"`
+	Text      string `json:"text"`
 }
 
 // Meta holds meta-information about a user's timeline
@@ -20,8 +20,8 @@ type Meta struct {
 	ResultCount int    `json:"result_count"`
 }
 
-// ProfileResponse is the result of requesting a user's profile
-type ProfileResponse struct {
+// UserReponse is the result of requesting a user's profile
+type UserReponse struct {
 	Data Profile `json:"data"`
 }
 
