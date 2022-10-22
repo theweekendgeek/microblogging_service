@@ -49,6 +49,7 @@ func GetLastSavedTweet(twitterId string) (data.Tweet, error) {
 	var tweet Tweet
 
 	_, modelId, err := GetUserByID(twitterId)
+	utils.FatalIfError(err)
 
 	err = getDb().Where(Tweet{ProfileID: modelId}).Last(&tweet).Error
 	return matchModelToTweet(tweet), err

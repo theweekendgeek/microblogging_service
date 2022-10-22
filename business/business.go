@@ -68,19 +68,19 @@ func getTweetsForUser(id string) *data.Tweets {
 	var tweets data.Tweets
 
 	loop := 0
-	for true {
+	for {
 		// request new tweets since latest
 		timelinePointer := apiClient.RequestTweets(id, params)
 		tweets = append(tweets, timelinePointer.Tweets...)
 
 		if getTweetsForNewUser(notFoundError) || noFurtherTweets(timelinePointer) {
 			break
-		} else {
-			// paginate if necessary
-			params.PaginationToken = timelinePointer.MetaData.NextToken
 		}
 
+		// paginate if necessary
+		params.PaginationToken = timelinePointer.MetaData.NextToken
 		loop++
+
 		if loop == 4 { // limit number of loops to 5 for now
 			break
 		}
