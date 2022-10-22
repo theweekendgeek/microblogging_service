@@ -18,6 +18,6 @@ func init() {
 
 func HelloGet(_ http.ResponseWriter, _ *http.Request) {
 	fmt.Println("INVOKING FUNCTION")
-	business.GetNewTweets()
+	business.RequestAndSaveTweets()
 	fmt.Println("FUNCTION DONE")
 }

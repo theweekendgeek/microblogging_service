@@ -3,17 +3,18 @@ package twitter
 import (
 	. "doescher.ninja/twitter-service/config"
 	"doescher.ninja/twitter-service/data"
+	"doescher.ninja/twitter-service/utils"
 	"fmt"
 )
 
 func RequestTweets(id string) *data.Tweets {
-	url := fmt.Sprintf(Const().TimelineByID, id)
+	url := fmt.Sprintf(Const().EndpointTimelineByID, id)
 	res := MakeRequest(url)
 
 	var timelineResponse data.TimelineResponse
 
 	err := Parser{}.ParseResponse(res, &timelineResponse)
-	FatalIfError(err)
+	utils.FatalIfError(err)
 
 	tweets := data.TimelineResponse{
 		Tweets:   timelineResponse.Tweets,
@@ -24,11 +25,11 @@ func RequestTweets(id string) *data.Tweets {
 }
 
 func RequestProfile(id string) *data.Profile {
-	res := MakeRequest(Const().UserByID + id)
+	res := MakeRequest(Const().EndpointUserByID + id)
 
 	var profileResponse data.ProfileResponse
 	err := Parser{}.ParseResponse(res, &profileResponse)
-	FatalIfError(err)
+	utils.FatalIfError(err)
 
 	profile := data.Profile{
 		ID:       profileResponse.Data.ID,

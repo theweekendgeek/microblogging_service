@@ -1,22 +1,22 @@
 package config
 
-var baseUrl = "https://api.twitter.com"
+var baseURL = "https://api.twitter.com"
 var version = "/2"
 
 var getUserByID = "/users/"
 var timeLineByID = "/users/%s/tweets?max_results=20" //+ fmt.Sprintf("%d", Conf().MaxTweets)
 
 type Constants struct {
-	UserByID       string
-	TimelineByID   string
-	UsersFileLocal string
-	UsersFileCloud string
-	EnvFileProd    string
-	EnvFileTest    string
-	EnvFileLocal   string
-	EnvProd        string
-	EnvTest        string
-	EnvLocal       string
+	EndpointUserByID     string // uri to get a user profile by id
+	EndpointTimelineByID string // uri to get a user's timeline by id
+	UsersFileLocal       string // path to the user id file on local machine
+	UsersFileCloud       string // path to the user id file on gcp cloud function
+	EnvFileProd          string // env file for prod TODO: simplify handling of env files
+	EnvFileTest          string // env file for testing
+	EnvFileLocal         string // ...
+	EnvProd              string // "PROD"
+	EnvTest              string // "TEST
+	EnvLocal             string // "DEV"
 }
 
 func Const() Constants {
@@ -24,14 +24,14 @@ func Const() Constants {
 }
 
 var constants = Constants{
-	UserByID:       baseUrl + version + getUserByID,
-	TimelineByID:   baseUrl + version + timeLineByID,
-	UsersFileLocal: "./users.json",
-	UsersFileCloud: "./serverless_function_source_code/users.json",
-	EnvFileProd:    ".env",
-	EnvFileTest:    "../.env.example",
-	EnvFileLocal:   ".env.dev",
-	EnvProd:        "PROD",
-	EnvTest:        "TEST",
-	EnvLocal:       "DEV",
+	EndpointUserByID:     baseURL + version + getUserByID,
+	EndpointTimelineByID: baseURL + version + timeLineByID,
+	UsersFileLocal:       "./users.json",
+	UsersFileCloud:       "./serverless_function_source_code/users.json",
+	EnvFileProd:          ".env",
+	EnvFileTest:          "../.env.example",
+	EnvFileLocal:         ".env.dev",
+	EnvProd:              "PROD",
+	EnvTest:              "TEST",
+	EnvLocal:             "DEV",
 }
