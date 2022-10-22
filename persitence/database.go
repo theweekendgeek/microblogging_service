@@ -1,7 +1,7 @@
 package persitence
 
 import (
-	. "doescher.ninja/twitter-service/config"
+	"doescher.ninja/twitter-service/config"
 	"doescher.ninja/twitter-service/utils"
 	"fmt"
 	"gorm.io/driver/postgres"
@@ -39,7 +39,7 @@ func generateConnectionString(c connectionConfig) string {
 }
 
 func connect() error {
-	c := Conf()
+	c := config.Conf()
 	var err error
 	conn, err = gorm.Open(postgres.Open(generateConnectionString(connectionConfig{
 		c.DbHost,
