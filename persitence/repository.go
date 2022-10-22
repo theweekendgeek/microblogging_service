@@ -56,15 +56,15 @@ func GetLastSavedTweet(twitterId string) (data.Tweet, error) {
 
 func matchModelToTweet(tweet Tweet) data.Tweet {
 	return data.Tweet{
-		ID:   tweet.TwitterID,
-		Text: tweet.Text,
+		TwitterID: tweet.TwitterID,
+		Text:      tweet.Text,
 	}
 }
 
 func matchTweetToModel(tweet data.Tweet, userid uint) Tweet {
 	return Tweet{
 		Text:      tweet.Text,
-		TwitterID: tweet.ID,
+		TwitterID: tweet.TwitterID,
 		ProfileID: userid,
 	}
 }
@@ -78,7 +78,7 @@ func matchProfile(model Profile) data.Profile {
 
 }
 
-func DeleteTweets() {
-	//goland:noinspection ALL
-	getDb().Exec("DELETE FROM tweets")
-}
+//func DeleteTweets() {
+//	//goland:noinspection ALL
+//	getDb().Exec("DELETE FROM tweets")
+//}

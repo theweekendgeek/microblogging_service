@@ -9,8 +9,9 @@ import (
 
 type APIClient struct{}
 
-func (APIClient) RequestTweets(id string) *data.Tweets {
-	url := fmt.Sprintf(Const().EndpointTimelineByID, id)
+func (APIClient) RequestTweets(id string, opts QueryOptions) *data.TimelineResponse {
+	url := buildTimelineUrl(opts)
+	url = fmt.Sprintf(url, id)
 
 	timelineResponse := request[data.TimelineResponse](url)
 	tweets := getTweets(timelineResponse)
@@ -31,8 +32,8 @@ func getUser(profileResponse data.UserReponse) data.Profile {
 	return profileResponse.Data
 }
 
-func getTweets(timelineResponse data.TimelineResponse) data.Tweets {
-	return timelineResponse.Tweets
+func getTweets(timelineResponse data.TimelineResponse) data.TimelineResponse {
+	return timelineResponse
 }
 
 func request[T any](url string) T {
