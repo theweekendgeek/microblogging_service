@@ -11,7 +11,7 @@ type Constants struct {
 	EndpointTimelineByID string // uri to get a user's timeline by id
 	UsersFileLocal       string // path to the user id file on local machine
 	UsersFileCloud       string // path to the user id file on gcp cloud function
-	EnvFileProd          string // env file for prod TODO: simplify how env files are handled
+	EnvFileProd          string // env file for prod TODO: simplify handling of env files
 	EnvFileTest          string // env file for testing
 	EnvFileLocal         string // ...
 	EnvProd              string // "PROD"
