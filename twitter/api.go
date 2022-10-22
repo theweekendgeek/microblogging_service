@@ -1,7 +1,7 @@
 package twitter
 
 import (
-	. "doescher.ninja/twitter-service/config"
+	"doescher.ninja/twitter-service/config"
 	"doescher.ninja/twitter-service/data"
 	"doescher.ninja/twitter-service/utils"
 	"fmt"
@@ -23,7 +23,7 @@ func (APIClient) RequestTweets(id string, opts QueryOptions) *data.TimelineRespo
 
 // RequestUser returns the profile for a given user id
 func (APIClient) RequestUser(id string) *data.Profile {
-	url := Const().EndpointUserByID + id
+	url := config.Const().EndpointUserByID + id
 
 	userResponse := request[data.UserReponse](url)
 	profile := getUser(userResponse)
