@@ -35,6 +35,7 @@ func CreateUser(profile *data.Profile) {
 	utils.FatalIfError(result.Error)
 }
 
+// TODO: breaks on first run for a user
 func CreateTweets(tweets *data.Tweets, userID uint) {
 	var tweetModels []Tweet
 	for _, v := range *tweets {
@@ -52,7 +53,7 @@ func GetLastSavedTweet(twitterID string) (data.Tweet, error) {
 	_, modelID, err := GetUserByID(twitterID)
 	utils.FatalIfError(err)
 
-	err = getDb().Where(Tweet{ProfileID: modelID}).Last(&tweet).Error
+	err = getDb().Where(Tweet{ProfileID: modelID}).Order(Tweet{}.TwitterID).First(&tweet).Error
 	return matchModelToTweet(tweet), err
 }
 
@@ -77,10 +78,4 @@ func matchProfile(model Profile) data.Profile {
 		Name:     model.Name,
 		Username: model.Username,
 	}
-
 }
-
-//func DeleteTweets() {
-//	//goland:noinspection ALL
-//	getDb().Exec("DELETE FROM tweets")
-//}
