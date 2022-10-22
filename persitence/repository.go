@@ -5,8 +5,8 @@ import (
 	"doescher.ninja/twitter-service/utils"
 )
 
-// TODO: find a better way to return ids or models
 func GetUserByID(twitterID string) (data.Profile, uint, error) {
+	// TODO: find a better way to return ids or models
 	var user Profile
 
 	err := getDb().Where(&Profile{
@@ -35,8 +35,8 @@ func CreateUser(profile *data.Profile) {
 	utils.FatalIfError(result.Error)
 }
 
-// TODO: breaks on first run for a user
 func CreateTweets(tweets *data.Tweets, userID uint) {
+	// TODO: breaks on first run for a user
 	var tweetModels []Tweet
 	for _, v := range *tweets {
 		tweetModels = append(tweetModels, matchTweetToModel(v, userID))
@@ -53,7 +53,7 @@ func GetLastSavedTweet(twitterID string) (data.Tweet, error) {
 	_, modelID, err := GetUserByID(twitterID)
 	utils.FatalIfError(err)
 
-	err = getDb().Where(Tweet{ProfileID: modelID}).Order(Tweet{}.TwitterID).First(&tweet).Error
+	err = getDb().Where(Tweet{ProfileID: modelID}).Order("twitter_id DESC").Take(&tweet).Error
 	return matchModelToTweet(tweet), err
 }
 
