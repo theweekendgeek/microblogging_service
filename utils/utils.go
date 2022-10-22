@@ -8,7 +8,7 @@ import (
 )
 
 // ReadUserIDs reads a data source and returns a slice returning the individual IDs
-func ReadUserIDs() ([]string, error) {
+func ReadUserIDs() []string {
 	dataSourceContent, err := readFromSource()
 	FatalIfError(err)
 
@@ -16,7 +16,7 @@ func ReadUserIDs() ([]string, error) {
 	err = json.Unmarshal(dataSourceContent, &userIDs)
 	FatalIfError(err)
 
-	return userIDs, err
+	return userIDs
 }
 
 func readFromSource() ([]byte, error) {

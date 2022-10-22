@@ -28,7 +28,7 @@ func GetLastUser() (uint, error) {
 	return profile.ID, err
 }
 
-func CreateProfile(profile *data.Profile) {
+func CreateUser(profile *data.Profile) {
 	modelProfile := Profile{Name: profile.Name, TwitterId: profile.ID, Username: profile.Username}
 
 	result := getDb().Create(&modelProfile)

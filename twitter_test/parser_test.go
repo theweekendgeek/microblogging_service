@@ -39,11 +39,6 @@ func TestParseProfileResponse(t *testing.T) {
 		assert.Equal(t, "NASA", profileResponse.Data.Username)
 
 	}
-
-	//if twitter.ProfileResponse(parsedResponse).Data.ID == "" {
-	//
-	//}
-
 }
 
 func TestParsesTimelines(t *testing.T) {
