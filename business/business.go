@@ -11,8 +11,6 @@ import (
 var apiClient = twitter.APIClient{}
 
 func RequestAndSaveTweets() {
-	//persitence.DeleteTweets()
-
 	userIDs := utils.ReadUserIDs()
 
 	wg := sync.WaitGroup{}
