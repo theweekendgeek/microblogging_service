@@ -2,12 +2,12 @@ package twitter_test
 
 import (
 	"doescher.ninja/twitter-service/data"
+	"doescher.ninja/twitter-service/twitter"
 	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
-import "doescher.ninja/twitter-service/twitter"
 
 var parser twitter.Parser
 
