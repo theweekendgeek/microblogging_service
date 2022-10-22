@@ -2,6 +2,7 @@
 package config
 
 import (
+	"fmt"
 	"github.com/joho/godotenv"
 	"log"
 	"os"
@@ -15,14 +16,26 @@ func getEnvFileName() string {
 }
 
 func init() {
-	if !(getEnv() == Const().EnvProd) {
+	LoadEnvIfNeeded()
+	loadConfig()
+}
+
+func LoadEnvIfNeeded() {
+	if runningTestOrLocal() {
 		name := getEnvFileName()
 		err := godotenv.Load(name)
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
-	loadConfig()
+}
+
+func runningTestOrLocal() bool {
+	fmt.Printf("os.GetEnv: %s \n", os.Getenv("ENV"))
+	fmt.Printf("Const().EnvProd: %s \n", Const().EnvProd)
+	fmt.Printf("getEnv() == Const().EnvProd %v \n", getEnv() == Const().EnvProd)
+	fmt.Printf("!(getEnv() == Const().EnvProd) %v \n", !(getEnv() == Const().EnvProd))
+	return !(getEnv() == Const().EnvProd)
 }
 
 func getEnv() string {
