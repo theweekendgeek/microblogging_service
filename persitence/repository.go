@@ -2,7 +2,7 @@ package persitence
 
 import (
 	"doescher.ninja/twitter-service/data"
-	. "doescher.ninja/twitter-service/utils"
+	"doescher.ninja/twitter-service/utils"
 )
 
 func GetUserByID(id string) (data.Profile, uint, error) {
@@ -32,7 +32,7 @@ func CreateProfile(profile *data.Profile) {
 	modelProfile := Profile{Name: profile.Name, TwitterId: profile.ID, Username: profile.Username}
 
 	result := getDb().Create(&modelProfile)
-	FatalIfError(result.Error)
+	utils.FatalIfError(result.Error)
 }
 
 func CreateTweets(tweets *data.Tweets, userID uint) {
@@ -42,7 +42,7 @@ func CreateTweets(tweets *data.Tweets, userID uint) {
 	}
 
 	err := getDb().Create(&tweetModels).Error
-	FatalIfError(err)
+	utils.FatalIfError(err)
 }
 
 func matchTweetToModel(tweet data.Tweet, userid uint) Tweet {
