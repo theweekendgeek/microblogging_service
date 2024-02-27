@@ -8,10 +8,10 @@ type Profile struct {
 	Username string `json:"username"`
 }
 
-// Tweet represents a single tweet
-type Tweet struct {
-	TwitterID string `json:"id"`
-	Text      string `json:"text"`
+// Post represents a single tweet
+type Post struct {
+	PostID      string `json:"id"`
+	PostContent string `json:"text"`
 }
 
 // Meta holds meta-information about a user's timeline
@@ -25,11 +25,11 @@ type UserReponse struct {
 	Data Profile `json:"data"`
 }
 
-// Tweets is a slice of tweets
-type Tweets []Tweet
+// Posts is a slice of post
+type Posts []Post
 
 // TimelineResponse is the result of requesting a user's timeline
 type TimelineResponse struct {
-	Tweets   Tweets `json:"data"`
-	MetaData Meta   `json:"meta"`
+	Posts    Posts `json:"data"`
+	MetaData Meta  `json:"meta"`
 }

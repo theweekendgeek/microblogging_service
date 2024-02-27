@@ -37,7 +37,7 @@ func CreateUser(profile *data.Profile) {
 }
 
 // TODO: breaks on first run for a user
-func CreateTweets(tweets *data.Tweets, userID uint) {
+func CreatePosts(tweets *data.Posts, userID uint) {
 	var tweetModels []Tweet
 	for _, v := range *tweets {
 		tweetModels = append(tweetModels, matchTweetToModel(v, userID))
@@ -48,7 +48,7 @@ func CreateTweets(tweets *data.Tweets, userID uint) {
 }
 
 // GetLastSavedTweet get the newest tweet for a user
-func GetLastSavedTweet(twitterID string) (data.Tweet, error) {
+func GetLastSavedTweet(twitterID string) (data.Post, error) {
 	var tweet Tweet
 
 	_, modelID, err := GetUserByID(twitterID)
@@ -58,17 +58,17 @@ func GetLastSavedTweet(twitterID string) (data.Tweet, error) {
 	return matchModelToTweet(tweet), err
 }
 
-func matchModelToTweet(tweet Tweet) data.Tweet {
-	return data.Tweet{
-		TwitterID: tweet.TwitterID,
-		Text:      tweet.Text,
+func matchModelToTweet(tweet Tweet) data.Post {
+	return data.Post{
+		PostID:      tweet.TwitterID,
+		PostContent: tweet.Text,
 	}
 }
 
-func matchTweetToModel(tweet data.Tweet, userid uint) Tweet {
+func matchTweetToModel(tweet data.Post, userid uint) Tweet {
 	return Tweet{
-		Text:      tweet.Text,
-		TwitterID: tweet.TwitterID,
+		Text:      tweet.PostContent,
+		TwitterID: tweet.PostID,
 		ProfileID: userid,
 	}
 }
