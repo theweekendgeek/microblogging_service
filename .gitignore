@@ -1,9 +1,0 @@
-.env
-.idea
-**.tfvars
-/terraform/*.json
-*.tfstate
-*.tfstate.backup
-.terraform
-.env.dev
-.env.test
